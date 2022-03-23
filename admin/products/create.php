@@ -3,6 +3,11 @@
     require_once "../helpers/dbConnection.php";
     require_once "../helpers/functions.php";
     require_once "../helpers/checkLogin.php";
+    $user_id = $_SESSION['user']['user_id'];
+    if ($_SESSION['user']['title'] === "Customer") {
+        header('location: '.url("resources/404.html"));
+        exit();
+    }
     $addBy = $_SESSION['user']['user_id'];
     $sql = "SELECT * FROM categories";
     $category_op = runQuery($sql);

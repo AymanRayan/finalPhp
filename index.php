@@ -3,6 +3,12 @@ require_once "./admin/helpers/dbConnection.php";
 require_once "./admin/helpers/functions.php";
 require_once "./admin/helpers/checkLogin.php";
 $me = $_SESSION['user']['user_id'];
+$sqlchart ="SELECT * FROM `orders` WHERE `user_id` = $me";
+$opchart= runQuery($sqlchart);
+$order=mysqli_fetch_assoc($opchart);
+$orderid=$order['order_id'];
+$sqlorder="SELECT * FROM `order_products` as x right join `products` on x.product_id =products.product_id  WHERE x.order_id =$orderid";
+$opOrders=runQuery($sqlorder);
 $sql = "SELECT * from products";
 $op = runQuery($sql);
 ?>
@@ -97,19 +103,20 @@ $op = runQuery($sql);
                     <span class="badge badge-bg-1">2</span>
                 </a>
                 <ul class="dropdown-menu cart-list s-cate">
+                    <?php while($chart=mysqli_fetch_assoc($opOrders)){ ?>
                     <li class="single-cart-list">
-                        <a href="#" class="photo"><img src="assets/images/collection/arrivals1.png" class="cart-thumb" alt="image" /></a>
+                        <a href="#" class="photo"><img src="./admin/products/uploads/<?php echo $chart['product_img']?>" class="cart-thumb" alt="image" /></a>
                         <div class="cart-list-txt">
-                            <h6><a href="#">arm <br> chair</a></h6>
-                            <p>1 x - <span class="price">$180.00</span></p>
+                            <h6><a href="#"><?php echo $chart['name']?></a></h6>
+                            <p>1 x - <span class="price">$<?php echo $chart['price']?>.00</span></p>
                         </div><!--/.cart-list-txt-->
                         <div class="cart-close">
-                            <span class="lnr lnr-cross"></span>
+                           <a href="<?php echo url("delorder.php")."?id=".$chart['order_product_id']?>" ><span class="lnr lnr-cross"></span></a> 
                         </div><!--/.cart-close-->
                     </li><!--/.single-cart-list -->
-                    
+                    <?php } ?>
                     <li class="total">
-                        <span>Total: $0.00</span>
+                        <span>Total: $<?php echo $order['total_price']?>.00</span>
                         <button class="btn-cart pull-right" onclick="window.location.href='#'">view cart</button>
                     </li>
                 </ul>
@@ -157,7 +164,7 @@ $op = runQuery($sql);
                                     <div class="new-arrival-cart">
                                         <p>
                                             <span class="lnr lnr-cart"></span>
-                                            <a href="#">add <span>to </span> cart</a>
+                                            <a href="<?php echo url("addcart.php")."?id=".$data['product_id']?>">add <span>to </span> cart</a>
                                         </p>
                                         <p class="arrival-review pull-right">
                                             <span class="lnr lnr-heart"></span>
@@ -188,7 +195,7 @@ $op = runQuery($sql);
                     <a href="#"><i class="fa fa-behance"></i></a>
                 </div>
                 <p>
-                    &copy;copyright. designed and developed by <a href="https://www.themesine.com/">themesine</a>
+                    &copy;copyright. designed and developed by <a href="#">El-Market</a>
                 </p>
                 <!--/p-->
             </div>

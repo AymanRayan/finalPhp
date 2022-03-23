@@ -3,7 +3,6 @@
     require_once "../helpers/dbConnection.php";
     require_once "../helpers/functions.php";
     require_once "../helpers/checkLogin.php";
-    // require_once "../helpers/checkAdmin.php";
     $id = $_GET['id'];
     $sql = "SELECT * FROM users WHERE user_id = $id";
     $op  = runQuery($sql);

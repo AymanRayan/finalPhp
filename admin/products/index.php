@@ -3,7 +3,11 @@
     require_once "../helpers/dbConnection.php";
     require_once "../helpers/functions.php";
     require_once "../helpers/checkLogin.php";
+    $user_id = $_SESSION['user']['user_id'];
     $sql = "SELECT products.*, users.name as user, categories.title as category FROM products INNER JOIN users ON users.user_id = products.addBy INNER JOIN categories ON categories.category_id = products.category_id";
+    if ($_SESSION['user']['title'] === "Seller") {
+    $sql = "SELECT products.*, users.name as user, categories.title as category FROM products INNER JOIN users ON users.user_id = products.addBy INNER JOIN categories ON categories.category_id = products.category_id WHERE products.addBy = $user_id";
+}
     $op = runQuery($sql);
     require_once "../layouts/header.php";
     require_once "../layouts/nav.php";
