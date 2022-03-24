@@ -108,7 +108,15 @@ $op = runQuery($sql);
                         <a href="#" class="photo"><img src="./admin/products/uploads/<?php echo $chart['product_img']?>" class="cart-thumb" alt="image" /></a>
                         <div class="cart-list-txt">
                             <h6><a href="#"><?php echo $chart['name']?></a></h6>
-                            <p>1 x - <span class="price">$<?php echo $chart['price']?>.00</span></p>
+                            <p><?php 
+                            $pro_id=$chart['product_id'];
+                            $qusql="SELECT SUM(quantity)
+                           FROM order_products
+                            WHERE product_id = $pro_id;";
+                            $quop=runQuery($qusql);
+                            $quantity = mysqli_fetch_array($quop);
+                            echo   $quantity['SUM(quantity)']; //$chart['quantity']
+                            ?> x - <span class="price">$<?php echo $chart['price']?>.00</span></p>
                         </div><!--/.cart-list-txt-->
                         <div class="cart-close">
                            <a href="<?php echo url("delorder.php")."?id=".$chart['order_product_id']?>" ><span class="lnr lnr-cross"></span></a> 
